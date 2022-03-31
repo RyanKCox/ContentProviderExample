@@ -14,12 +14,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +25,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.revature.contentproviderexample.RevatureContentProvider
 import com.revature.contentproviderexample.model.data.UserItem
 import com.revature.contentproviderexample.viewmodel.UsersViewModel
+import androidx.lifecycle.LiveData
 
 
 @SuppressLint("Range")
@@ -36,7 +34,6 @@ fun DisplayUsersScreen(userViewModel:UsersViewModel){
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
-    var cp = RevatureContentProvider()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -114,12 +111,17 @@ fun DisplayUsersScreen(userViewModel:UsersViewModel){
                         if ( cursor!!.moveToFirst()){
 
                             val strBuild = StringBuilder()
+                            var sArray = arrayListOf<String>()
 
                             while (!cursor.isAfterLast){
+
+                                //nameList.add(cursor.getString(cursor.getColumnIndex("name")))
 
                                 sResult = "${cursor.getString(
                                     cursor.getColumnIndex("id"))}-${cursor.getString(cursor.getColumnIndex("name"))}"
                                 cursor.moveToNext()
+
+
                                 Log.d("Data","$sResult")
                             }
                         }
@@ -133,15 +135,34 @@ fun DisplayUsersScreen(userViewModel:UsersViewModel){
 
                 Spacer(Modifier.size(5.dp))
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxHeight(.7f),
-                    horizontalAlignment = Alignment.CenterHorizontally){
-                    items(userList.value){
-                        userCard(user = it, userViewModel)
-                    }
-                }
+//                LazyColumn(
+//                    modifier = Modifier
+//                        .fillMaxHeight(.7f),
+//                    horizontalAlignment = Alignment.CenterHorizontally){
+//                    items(nameList.size){
+//                        nameCard(sName = nameList[it])
+//                        //userCard(user = it, userViewModel)
+//                    }
+//                }
             }
+        }
+    )
+}
+
+@Composable
+fun nameCard(sName:String){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(.9f)
+            .padding(5.dp),
+        content = {
+
+            Row{
+                Text("Name:")
+                Spacer(modifier = Modifier.size(20.dp))
+                Text(sName)
+            }
+
         }
     )
 }

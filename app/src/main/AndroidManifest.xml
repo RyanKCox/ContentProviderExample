@@ -22,7 +22,8 @@
         </activity>
         <provider
             android:authorities="com.revature.user.provider"
-            android:name=".RevatureContentProvider"/>
+            android:name=".RevatureContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

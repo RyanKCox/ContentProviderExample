@@ -116,7 +116,10 @@ class RevatureContentProvider:ContentProvider() {
     }
 
     override fun getType(p0: Uri): String? {
-        TODO("Not yet implemented")
+        return when (uriMatcher!!.match(p0)){
+            uriCode -> "$uriCode"
+            else-> throw java.lang.IllegalArgumentException("Unknown Type")
+        }
     }
 
     override fun insert(uri: Uri, p1: ContentValues?): Uri? {
